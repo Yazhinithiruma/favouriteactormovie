@@ -1,25 +1,29 @@
 # Use official Node.js image
 FROM node:16
 
-# Create and set working directory
+# Create and set the working directory for the application
 WORKDIR /app
 
-# Copy the backend package.json and install dependencies
-COPY backend/package.json /app/backend/package.json
+# Copy backend package.json and package-lock.json
+COPY backend/package.json backend/package-lock.json ./backend/
+
+# Set the working directory to /app/backend
 WORKDIR /app/backend
+
+# Install backend dependencies
 RUN npm install
 
-# Copy the frontend files into the backend directory (this will be served by Express)
+# Copy frontend files into the container's frontend directory
 COPY frontend /app/frontend
 
-# Copy the backend code
+# Copy the backend code into the backend directory
 COPY backend /app/backend
 
-# Set the working directory back to the backend
+# Set the working directory back to /app/backend to start the app
 WORKDIR /app/backend
 
-# Expose port for the application
+# Expose port for the backend application
 EXPOSE 3000
 
-# Start the application
+# Start the backend application
 CMD ["node", "server.js"]
